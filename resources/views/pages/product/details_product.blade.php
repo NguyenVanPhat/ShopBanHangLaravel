@@ -3,31 +3,41 @@
 @foreach ($product as $item_product)
     
 
-<div class="product-details"><!--product-details-->
+<div class="product-details">
+    <img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+	<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
+    <!--product-details-->
+<style type="text/css">
+    .lSSlideOuter .lSPager.lSGallery img {
+    display: block;
+     max-width: 100%;
+    height: 80px;
+}
+</style>
     <div class="col-sm-5">
-        <div class="view-product">
-            <img src="{{ URL::To('public/uploads/product/'.$item_product->product_image) }}" alt="" />
-            <h3>ZOOM</h3>
-        </div>
-        <div id="similar-product" class="carousel slide" data-ride="carousel">
-            
-              <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                      <a href=""><img src="{{ URL::TO('public/frontend/images/similar1.jpg') }}" alt=""></a>
-                      <a href=""><img src="{{ URL::TO('public/frontend/images/similar2.jpg') }}" alt=""></a>
-                      <a href=""><img src="{{ URL::TO('public/frontend/images/similar3.jpg') }}" alt=""></a>
-                    </div>                                    
-                </div>
-
-              <!-- Controls -->
-              <a class="left item-control" href="#similar-product" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
-              </a>
-              <a class="right item-control" href="#similar-product" data-slide="next">
-                <i class="fa fa-angle-right"></i>
-              </a>
-        </div>
+    <ul id="imageGallery">
+        <li data-thumb="{{asset('/public/frontend/images/man-one.jpg')}}" data-src="{{asset('/public/frontend/images/man-one.jpg')}}">
+            <img  width="100%" src="{{asset('/public/frontend/images/man-one.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
+            <img width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
+        </li>
+</ul>
 
     </div>
     <div class="col-sm-7">

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Slider;
-
+use App\CatePost;
 use App\Exports\ExportCategory;
 use App\Imports\ImportCategory;
 use Maatwebsite\Excel\Facades\Excel;
@@ -70,8 +70,9 @@ class CategoryProduct extends Controller
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $category_name=DB::table('tbl_category_product')->where('tbl_category_product.category_id',$category_id)->get();
         $slider=Slider::where('slider_status','1')->get();
+        $cate_post= CatePost::where('cate_post_status','1')->get();
         $category_by_id=DB::table('tbl_product')->join('tbl_category_product','tbl_product.category_id','=','tbl_category_product.category_id')->where('tbl_product.category_id',$category_id)->get();
-        return view ('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$category_by_id)->with('category_name',$category_name)->with('slider',$slider);
+        return view ('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$category_by_id)->with('category_name',$category_name)->with(compact('cate_post'))->with('slider',$slider);
     }
     public function import_category(Request $request){
         $path = $request->file('file')->getRealPath();

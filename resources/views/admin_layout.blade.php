@@ -168,7 +168,43 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </ul>  
 
                 </li> 
-                                  
+                @hasrole('admin')
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span> User</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{ url::to('/users') }}">Danh Sách Người Dùng</a></li>					
+                    </ul>                    
+               </li> 
+                @endhasrole  
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span> Danh Mục Bài Viết</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{ url::to('/add-category-post') }}">Thêm Danh Mục Bài Viết</a></li>					
+                    </ul> 
+                    <ul class="sub">
+                        <li><a href="{{ url::to('/all-category-post') }}">Liệt Kê Danh Mục Bài Viết</a></li>					
+                    </ul>  
+
+                </li>  
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span> Bài Viết</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{ url::to('/add-post') }}">Thêm Bài Viết</a></li>					
+                    </ul> 
+                    <ul class="sub">
+                        <li><a href="{{ url::to('/all-post') }}">Liệt Kê Bài Viết</a></li>					
+                    </ul>  
+
+                </li>            
             </ul>           
          </div>
         <!-- sidebar menu end-->
@@ -202,6 +238,63 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 <!-- morris JavaScript -->
+<!-- Load Gallery -->
+<script type="text/javascript">
+    $(document).ready( function () {
+        load_gallery();
+
+        function load_gallery(){
+            var product_id=$('.product_id').val();
+            var _token=$('input[name="_token"]').val();
+
+            $.ajax({
+                url:'{{ URL('/show-gallery-ajax') }}',
+                method:'post',
+                data:{product_id:product_id,_token:_token},
+                success:function(data){
+                    $('#load_gallery').html(data);
+                }
+            });            
+        }
+        $('#file').change(function(){
+            var error="";
+            var files=$('#file')[0].files;
+
+            if(files.length>5){
+                error+="<p> Bạn Chọn Tối Đa Chỉ Được 5 Ảnh ! </p>";
+            }else if(files.length==''){
+                error+="<p> Bạn Chưa Chọn Ảnh </p>";
+            }else if(files.size > 2000000){
+                error+="<p> File Ảnh Không Được Lớn Hơn 2M</p>";
+            }
+
+            if(error==""){
+               
+            }else{
+                $('#file').val('');
+                $('#error_gallery').html('<span class="text-danger">'+ error +'</span>')
+            }
+        });
+
+        $(document).on('blur','.edit_gal_name',function(){
+            var gal_id=$(this).data(gal_id);
+            var gal_name=$(this).text();
+            var _token=$('input[name="_token"]').val();
+
+            $.ajax({
+                url:"{{url('/edit-gal-name')}}",
+                method:'POST',
+                data:{gal_id:gal_id,gal_name:gal_name,_token:_token},
+                success:function(data){
+                    load_gallery();
+                    $('#error_gallery').html('<span class="text-danger">cập nhật tên hình ảnh thành công !</span>')
+                }
+            });
+        });
+        
+} );
+</script>	
+
 <script type="text/javascript">
     $(document).ready( function () {
     $('#myTable').DataTable();

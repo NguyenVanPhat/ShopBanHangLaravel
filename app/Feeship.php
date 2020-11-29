@@ -21,5 +21,5 @@ class Feeship extends Model
  	}
  	public function wards(){
  		return $this->belongsTo('App\Wards', 'fee_xaid');
-     }
+    }
 }

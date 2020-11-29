@@ -1,6 +1,8 @@
 
 @extends('layout')
 @section('content')
+<img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
 <section id="form"><!--form-->
     <div class="container">
         <div class="row">

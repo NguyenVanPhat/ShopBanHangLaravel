@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Slider;
+use App\CatePost;
 session_start();
 
 class CardController extends Controller
@@ -88,7 +89,8 @@ class CardController extends Controller
       $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
       $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
       $slider=Slider::where('slider_status','1')->get();
-      return view('pages.cart.cart_ajax')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider);
+      $cate_post= CatePost::where('cate_post_status','1')->get();
+      return view('pages.cart.cart_ajax')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider)->with(compact('cate_post'));
    }
    public function delete_sp($cart_id){
       $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();

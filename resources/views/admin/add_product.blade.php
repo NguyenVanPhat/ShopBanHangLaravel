@@ -27,6 +27,10 @@
                                 <input type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Số Lượng Sản Phẩm</label>
+                                <input type="munber" name="product_quantity" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Hình Ảnh</label>
                                 <input type="file" name="product_image" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
                             </div>

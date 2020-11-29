@@ -21,15 +21,19 @@
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên Sản Phẩm</label>
-                                    <input VALUE="{{ $edit->product_name }}" type="text" name="product_name" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
+                                    <input VALUE="{{ $edit->product_name }}" type="text" name="product_name" class="form-control" id="exampleInputEmail1" placeholder="Tên Sản Phẩm....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Giá Sản Phẩm</label>
-                                    <input VALUE="{{ $edit->product_price }}" type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
+                                    <input VALUE="{{ $edit->product_price }}" type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Giá Sản Phẩm....">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số Lượng Sản Phẩm</label>
+                                    <input VALUE="{{ $edit->product_quantity }}" type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Số Lượng Sản Phẩmn....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Hình Ảnh</label>
-                                    <input type="file" name="product_image" class="form-control" id="exampleInputEmail1" placeholder="Tên Thương Hiệu....">
+                                    <input type="file" name="product_image" class="form-control" id="exampleInputEmail1" placeholder="....">
                                     <img  width="100px" hight="100px" src="{{URL::TO('public/uploads/product/'.$edit->product_image)}}">
                                 </div>
                                 <div class="form-group">

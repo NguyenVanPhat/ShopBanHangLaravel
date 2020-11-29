@@ -1,8 +1,20 @@
 /* lg */ 
-@media (min-width: 1200px) {
 
+@media  (max-width: 1920px){
+	.leftgame   {
+		width: 130px;
+		left: calc((100% - 1200px)/2 - 130px) !important;
+	}
+	.rightgame {
+		width: 100px;
+		right: calc((100% - 1200px)/2 - 130px) !important;
+	}
 }
-
+@media screen and (max-width: 1280px)
+{
+	.leftgame, .rightgame {
+    display: none !important;
+}
 /* md */
 @media (min-width: 992px) and (max-width: 1199px) {
  

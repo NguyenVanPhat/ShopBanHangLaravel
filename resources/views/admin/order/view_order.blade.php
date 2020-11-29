@@ -82,7 +82,7 @@
              <td>{{$shipping->shipping_phone}}</td>
              <td>{{$shipping->shipping_email}}</td>
              <td>{{$shipping->shipping_notes}}</td>
-             <td>@if($shipping->shipping_method==0) Chuyển khoản @else Tiền mặt @endif</td>
+             <td>@if($shipping->shipping_method==0) Trả Bằng PayPal @else Trả Bằng Tiền Mặt @endif</td>
             
           
           </tr>
@@ -121,7 +121,7 @@
               </label>
             </th>
             <th>Tên sản phẩm</th>
-            <th>Số lượng kho còn</th>
+            {{-- <th>Số lượng kho còn</th> --}}
             <th>Mã giảm giá</th>
             <th>Phí ship hàng</th>
             <th>Số lượng</th>
@@ -147,7 +147,7 @@
            
             <td><i>{{$i}}</i></td>
             <td>{{$details->product_name}}</td>
-            <td>{{$details->product_sales_quantity}}</td>
+            {{-- <td>{{$details->product_sales_quantity}}</td> --}}
             <td>@if($details->product_coupon!='no')
                   {{$details->product_coupon}}
                 @else 
@@ -167,7 +167,7 @@
 
              @if($order_status!=2) 
 
-              <button class="btn btn-default update_quantity_order" data-product_id="{{$details->product_id}}" name="update_quantity_order">Cập nhật</button>
+              {{-- <button class="btn btn-default update_quantity_order" data-product_id="{{$details->product_id}}" name="update_quantity_order">Cập nhật</button> --}}
 
             @endif
 
@@ -200,7 +200,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="6">
+            {{-- <td colspan="6">
               @foreach($order as $key => $or)
                 @if($or->order_status==1)
                 <form>
@@ -238,7 +238,7 @@
                 @endforeach
 
 
-            </td>
+            </td> --}}
           </tr>
         </tbody>
       </table>

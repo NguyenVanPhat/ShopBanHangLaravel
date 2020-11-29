@@ -1,6 +1,8 @@
 @extends('layout')
 @section('content')
 <section id="cart_items">
+    <img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+	<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
     <div class="container">
         <div class="breadcrumbs">
             <ol class="breadcrumb">
@@ -11,6 +13,7 @@
         {{-- <div class="register-req">
             <p>Làm ơn đăng nhập hoặc đăng ký để xem lại lịch sử mua hàng !!!!!!</p>
         </div><!--/register-req--> --}}
+        @if(Session::get('cart')==true)
         <div class="shopper-informations">
             <div class="row">              
                 <div class="col-sm-12 clearfix">
@@ -55,10 +58,11 @@
             </div>
                 					
         </div>
+        @endif
     </div>       
 </section>
 <section id="cart_items">
-    <div class="container">
+    <div class="">
         <h3 class="text-center"> Xem Lại Giỏ Hàng </h3>
         @if(Session::get('cart')==true)
         <div class="table-responsive cart_info">
@@ -139,7 +143,7 @@
     </div>
 </section> 
     <section id="do_action">
-        <div class="container">      
+        <div class="">      
             <div class="row">
             
                 <div class="col-sm-6">
@@ -159,19 +163,28 @@
                                         @php 
                                             $total_coupon = ($sub_total*$cou['coupon_money'])/100;
                                             echo '<li>Tổng giảm: <span> '.number_format($total_coupon,0,',','.').' VND <span></li>';
+                                           
+                                                Session::put('total_money',$total_coupon/22000);                                          
+                                              
                                         @endphp
                                     <li>Thành Tiền :<span>{{number_format($sub_total+$fee-$total_coupon,0,',','.')}} VND</span></li>
                                     @elseif($cou['coupon_condition']==2)
-                                    <li>Mã giảm Tiền Mặt : {{number_format($cou['coupon_money'],0,',','.')}} VND</span></li>	                                                                             
+                                    <li>Mã giảm Tiền Mặt : <span> {{number_format($cou['coupon_money'],0,',','.')}} VND</span></li>	                                                                             
                                         @php 
                                             $total_coupon = $sub_total + $fee - $cou['coupon_money'];                           
                                         @endphp                                  
                                         <p><li>Tổng đã giảm :<span>{{number_format($total_coupon,0,',','.')}} VND</span></li></p>
+                                        <?php
+                                            Session::put('total_money',$total_coupon/22000);                                          
+                                        ?>
                                     @endif
                                 @endforeach							
                             @else
                            
-                            <p><li>Thành Tiền :<span>{{number_format($sub_total,0,',','.')}} VND</span></li></p>                        
+                            <p><li>Thành Tiền :<span>{{number_format($sub_total,0,',','.')}} VND</span></li></p> 
+                            <?php
+                                 Session::put('total_money',$sub_total/22000);                                          
+                            ?>      
                             @endif
                         </ul> 
                             {{-- <form action="{{ URL::TO('/check-coupon') }} " method="post">
@@ -220,6 +233,7 @@
                                 </div>                               
                                 <input type="button" value="Đặt Hàng" name="send_order" class="btn btn-primary btn-sm send_order">
                             </form>
+                           
                                                                                
                         </div>
                     </div>

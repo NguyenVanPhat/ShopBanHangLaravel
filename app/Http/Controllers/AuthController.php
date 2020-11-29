@@ -52,7 +52,7 @@ class AuthController extends Controller
         if(Auth::attempt(['admin_email' => $request->admin_email, 'admin_password' => $request->admin_password])){
             return redirect('/dashboard');
         }else{
-            return redirect('/register-auth')->with('message','Mật Khẩu Hoặc Tài Khoản Sai !');
+            return redirect('/admin')->with('message','Mật Khẩu Hoặc Tài Khoản Sai !');
         }
 
      } 

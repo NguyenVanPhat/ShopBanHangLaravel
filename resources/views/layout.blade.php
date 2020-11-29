@@ -14,7 +14,7 @@
 	<meta property="og:url" content="Hồ Văn Nguyên" />
 	<meta property="og:type" content="website" />
 
-    <title>Home | E-Shopper</title>
+    <title>Home | PN-Shop</title>
 	<link href="{{asset('public/frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -23,6 +23,10 @@
     <link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/sweetalert.css')}}" rel="stylesheet">
+
+	<link href="{{asset('public/frontend/css/lightgallery.min.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/lightslider.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/prettify.css')}}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -35,6 +39,9 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('public/frontend/images/ico/apple-touch-icon-72-precomposed.png')}}">
 	<link rel="apple-touch-icon-precomposed" href="{{asset('public/frontend/images/ico/apple-touch-icon-57-precomposed.png')}}">
 	
+	<script
+    	src="https://www.paypal.com/sdk/js?client-id=AR7k3SeD5tRpuiRAt3pUfVC_iPo5zgQxmLIhU4xdz46xlUEL8fuiR_1RrpKwG1O4hEUYSD2wDLKOM7LW"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    </script>
 	
 </head><!--/head-->
 
@@ -70,9 +77,9 @@
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4">
-						<div class="logo pull-left">
-							<a href=""><img src="{{('public/frontend/images/home/logo.png')}}" alt="" /></a>
+					<div class="col-sm-4"> 
+						<div class="logo pull-left companyinfo" style="margin-top: 0px;" >					
+							<h2><span>PN</span>-SHOP</h2>						
 						</div>
 						<div class="btn-group pull-right">
 							{{-- <div class="btn-group">
@@ -103,23 +110,7 @@
 							<ul class="nav navbar-nav">
 								{{-- <li><a href="{{ URL::TO('/login-checkout') }}"><i class="fa fa-user"></i> Tài Khoản</a></li> --}}
 								{{-- <li><a href="#"><i class="fa fa-star"></i></a></li> --}}
-								<?php
-									$customer_id=Session::get('customer_id');
-									$shipping_id=Session::get('shipping_id');
-									if($customer_id!=null && $shipping_id==null){
-								?>
-										<li><a href="{{ URL::TO('/show-checkout') }}"><i class="fa fa-crosshairs"></i> Thanh Toán</a></li>
-								<?php
-									}elseif($customer_id!=null && $shipping_id!=null) {
-								?>
-										<li><a href="{{ URL::TO('/payment') }}"><i class="fa fa-lock"></i> Thanh Toán</a></li>
-								<?php
-									}else{
-								?>	
-									<li><a href="{{ URL::TO('/login-checkout') }}"><i class="fa fa-lock"></i> Thanh Toán</a></li>
-								<?php
-									}
-								?>
+								
 
 								<li><a href="{{ URL::TO('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a></li>
 
@@ -173,11 +164,15 @@
                                     
                                 </li> 
 								<li class="dropdown"><a href="#">Tin Tức<i class="fa fa-angle-down"></i></a>
-                                    <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										
-                                    </ul>
-                                </li> 
+									
+									<ul role="menu" class="sub-menu">
+										@foreach ($cate_post as $item_cate_post)
+											<li><a href="{{URL::To('/danh-muc-bai-viet/'.$item_cate_post->cate_post_id) }}">{{ $item_cate_post->cate_post_name}}</a></li>	
+										@endforeach
+									</ul>
+							
+								
+							</li> 
 								{{-- <li><a href="404.html">Giỏ Hàng</a></li>
 								<li><a href="contact-us.html">Liên Hệ</a></li> --}}
 							</ul>
@@ -201,48 +196,8 @@
 		</div><!--/header-bottom-->
 	</header><!--/header-->
 	
-	<section id="slider"><!--slider-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
-						<ol class="carousel-indicators">
-							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-							<li data-target="#slider-carousel" data-slide-to="1"></li>
-							<li data-target="#slider-carousel" data-slide-to="2"></li>
-						</ol>
-						
-						<div class="carousel-inner">
-							@php 
-                            $i = 0;
-                        @endphp
-                        @foreach($slider as $key => $slide)
-                            @php 
-                                $i++;
-                            @endphp
-                            <div class="item {{$i==1 ? 'active' : '' }}">
-                               
-                                <div class="col-sm-12">
-                                    <img alt="{{$slide->slider_desc}}" src="{{asset('public/uploads/slider/'.$slide->slider_image)}}"  class="img img-responsive">
-                                   
-                                </div>
-                            </div>
-                        @endforeach  							
-						</div>
-						
-						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-							<i class="fa fa-angle-left"></i>
-						</a>
-						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-							<i class="fa fa-angle-right"></i>
-						</a>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-	</section><!--/slider-->
 	
+	@yield('content2')
 	<section>
 		<div class="container">
 			<div class="row">
@@ -282,7 +237,7 @@
 						</div><!--/price-range--> --}}
 						
 						<div class="shipping text-center"><!--shipping-->
-							<img src="{{('public/frontend/images/stk-bn-right.webp')}}" alt="" />
+							
 						</div><!--/shipping-->
 					
 					</div>
@@ -304,27 +259,19 @@
 				<div class="row">
 					<div class="col-sm-2">
 						<div class="companyinfo">
-							<h2><span>e</span>-shopper</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+							<h2><span>PN</span>-SHOP</h2>							
+							<p>Địa Chỉ:267F, Tô Ngọc Vân, Linh Đông, Thủ Đức, TPHCM</p>
+							<p>SDT:0922207717</p>
+							<p>Email:Vannguyen2441999@gamil.com</p>
 						</div>
 					</div>
 					<div class="col-sm-7">
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="images/home/iframe1.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
+						<div class="video-gallery text-center">
+							<h4 style="margin: 0 0 10px 0;"> Đăng Ký Kênh YouTuBe </4>
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/0YvVQ2I7uww" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 						
-						<div class="col-sm-3">
+						{{-- <div class="col-sm-3">
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
@@ -367,89 +314,43 @@
 								<p>Circle of Hands</p>
 								<h2>24 DEC 2014</h2>
 							</div>
-						</div>
+						</div> --}}
 					</div>
 					<div class="col-sm-3">
 						<div class="address">
-							<img src="images/home/map.png" alt="" />
-							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
+							<h5> Thông Tin Chăm Sóc Mua Hàng</h5>
+							<p>Địa Chỉ:267F, Tô Ngọc Vân, Linh Đông, Thủ Đức, TPHCM</p>
+							<p>SDT:0922207717</p>
+							<p>Email:Vannguyen2441999@gamil.com</p>
 						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="row text-center">
+						<div class="fb-like" data-href="https://vannguyen.xyz/" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div class="footer-widget">
+		{{-- <div class="footer-widget">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Service</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">Online Help</a></li>
-								<li><a href="#">Contact Us</a></li>
-								<li><a href="#">Order Status</a></li>
-								<li><a href="#">Change Location</a></li>
-								<li><a href="#">FAQ’s</a></li>
-							</ul>
-						</div>
+
 					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Quock Shop</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">T-Shirt</a></li>
-								<li><a href="#">Mens</a></li>
-								<li><a href="#">Womens</a></li>
-								<li><a href="#">Gift Cards</a></li>
-								<li><a href="#">Shoes</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Policies</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">Terms of Use</a></li>
-								<li><a href="#">Privecy Policy</a></li>
-								<li><a href="#">Refund Policy</a></li>
-								<li><a href="#">Billing System</a></li>
-								<li><a href="#">Ticket System</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>About Shopper</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">Company Information</a></li>
-								<li><a href="#">Careers</a></li>
-								<li><a href="#">Store Location</a></li>
-								<li><a href="#">Affillate Program</a></li>
-								<li><a href="#">Copyright</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-3 col-sm-offset-1">
-						<div class="single-widget">
-							<h2>About Shopper</h2>
-							<form action="#" class="searchform">
-								<input type="text" placeholder="Your email address" />
-								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-								<p>Get the most recent updates from <br />our site and be updated your self...</p>
-							</form>
-						</div>
+					<div class="col-sm-7">
+						<div class="fb-comments" data-href="http://localhost/phanvietcode/shopbanhanglaravel/" data-numposts="5" data-width=""></div>
 					</div>
 					
 				</div>
 			</div>
-		</div>
+		</div> --}}
 		
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
-					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+					<p class="pull-left">Copyright © 2020 PN-SHOP Inc. All rights reserved.</p>
+					<p class="pull-right">Designed by <span><a target="_blank" href="https://vannguyen.xyz/">PN SHOP</a></span></p>
 				</div>
 			</div>
 		</div>
@@ -463,13 +364,17 @@
     <script src="{{asset('public/frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
 	<script src="{{asset('public/frontend/js/sweetalert.min.js')}}"></script>
+	<script src="{{asset('public/frontend/js/lightgallery-all.min.js')}}"></script>
+	<script src="{{asset('public/frontend/js/lightslider.js')}}"></script>
 
+	
+	<!-- Load Facebook SDK for JavaScript -->
 	<div id="fb-root"></div>
 	<script>
 	  window.fbAsyncInit = function() {
 		FB.init({
 		  xfbml            : true,
-		  version          : 'v8.0'
+		  version          : 'v9.0'
 		});
 	  };
 
@@ -480,6 +385,15 @@
 	  js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<!-- Your Chat Plugin code -->
+	<div class="fb-customerchat"
+	  attribution=setup_tool
+	  page_id="103672578193000"
+theme_color="#ff7e29"
+logged_in_greeting="Chào bạn ! Bạn có câu hỏi gì cần tư vấn không ?"
+logged_out_greeting="Chào bạn ! Bạn có câu hỏi gì cần tư vấn không ?">
+	</div>
 
 	<!-- Your Chat Plugin code -->
 	<div class="fb-customerchat"
@@ -515,6 +429,25 @@
 
 		});
 	</script>
+	<!-- ma chay slider galary  -->
+	<script  type="text/javascript">
+		$(document).ready(function() {
+    		$('#imageGallery').lightSlider({
+			gallery:true,
+			item:1,
+			loop:true,
+			thumbItem:3,
+			slideMargin:0,
+			enableDrag: false,
+			currentPagerPosition:'left',
+				onSliderLoad: function(el) {
+					el.lightGallery({
+						selector: '#imageGallery .lslide'
+					});
+				}   
+			});  
+  		});
+	</script>
 	<script type="text/javascript">
 
 		$(document).ready(function(){
@@ -547,14 +480,20 @@
 						  url: '{{url('/confirm-order')}}',
 						  method: 'POST',
 						  data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_address:shipping_address,shipping_phone:shipping_phone,shipping_notes:shipping_notes,_token:_token,order_fee:order_fee,order_coupon:order_coupon,shipping_method:shipping_method},
-						  success:function(){
-							 swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
+						  success:function(data){
+							  if(data==0){
+									window.location.href = "{{url('/paypal')}}";
+							  }
+							  else{
+								swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
+							  }
+							 
 						  }
 					  });
 
-					  window.setTimeout(function(){ 
-						window.location.href = "{{url('/')}}";
-					  } ,2000);
+					//   window.setTimeout(function(){ 
+					// 	window.location.href = "{{url('/')}}";
+					//   } ,2000);
 
 					} else {
 					  swal("Đóng", "Đơn hàng chưa được gửi, làm ơn hoàn tất đơn hàng", "error");
@@ -651,7 +590,38 @@
         });
     });
     </script>
-	<div id="fb-root"></div>
+	<script type="text/javascript">
+		
+		total= $('#tongtien').val();
+		
+		
+		paypal.Buttons({
+		  createOrder: function(data, actions) {
+			// This function sets up the details of the transaction, including the amount and line item details.
+			return actions.order.create({
+			  purchase_units: [{
+				amount: {
+				  value: total
+				}
+			  }]
+			});
+		  },
+		  onApprove: function(data, actions) {
+			// This function captures the funds from the transaction.
+			return actions.order.capture().then(function(details) {
+			  // This function shows a transaction success message to your buyer.
+				alert('Giao Dịch Thành Công ' + details.payer.name.given_name);
+				window.location.href = "{{url('/')}}";
+				
+			});
+		  }
+		}).render('#paypal-button-container');
+
+		
+		//This function displays Smart Payment Buttons on your web page.
+	  </script>
+	
+	
 
 </body>
 </html>

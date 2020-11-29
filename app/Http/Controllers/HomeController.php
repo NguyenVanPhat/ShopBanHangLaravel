@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
 use App\Product;
+use App\CatePost;
+use App\Post;
 session_start();
 
 class HomeController extends Controller
@@ -18,17 +20,19 @@ class HomeController extends Controller
         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $slider=Slider::where('slider_status','1')->get();
+        $cate_post= CatePost::where('cate_post_status','1')->get();
         $all_product=DB::table('tbl_product')->where('product_status','1')->orderby('product_id','desc')->limit(9)->get();
-        return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$all_product)->with('slider',$slider);
+        return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$all_product)->with('slider',$slider)->with(compact('cate_post'));
     }
     public function search_home(Request $request){    
         $keywords_home=$request->keyword_home;
         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $slider=Slider::where('slider_status','1')->get();
+        $cate_post= CatePost::where('cate_post_status','1')->get();
         $search_product=DB::table('tbl_product')->where('product_name','Like','%' .$keywords_home. '%')->orderby('product_id','desc')->limit(9)->get();
 
-        return view('pages.product.search_home')->with('category',$cate_product)->with('brand',$brand_product)->with('search_product',$search_product)->with('slider',$slider);;
+        return view('pages.product.search_home')->with('category',$cate_product)->with('brand',$brand_product)->with(compact('cate_post'))->with('search_product',$search_product)->with('slider',$slider);;
 
     }
     public function autocomplete_ajax(Request $request){    
@@ -47,8 +51,26 @@ class HomeController extends Controller
          }
 
         return $ouput;
+    }
+    public function show_post($cate_post_id){
+        $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
+        $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
+        $slider=Slider::where('slider_status','1')->get();
+        $cate_post= CatePost::where('cate_post_status','1')->get();
 
+        $post=Post::with('cate_post')->where('cate_post_id',$cate_post_id)->orderBy('post_id','desc')->where('post_status',1)->paginate(3);
+        return view('pages.post.show_post')->with('category',$cate_product)->with('brand',$brand_product)->with('post',$post)->with('slider',$slider)->with(compact('cate_post'));
+        
+    }
+    public function detail_post($post_id){
+        $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
+        $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
+        $slider=Slider::where('slider_status','1')->get(); 
+        $cate_post= CatePost::where('cate_post_status','1')->get();
 
+        $post=Post::where('post_id',$post_id)->orderBy('post_id','desc')->where('post_status',1)->take(1)->get();
+        return view('pages.post.detail_post')->with('category',$cate_product)->with('brand',$brand_product)->with('post',$post)->with('slider',$slider)->with(compact('cate_post'));
+        
     }
 }
  

@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Slider;
+use App\CatePost;
 session_start();
 class ProductController extends Controller
 {
     public function add_product(){
         $category_all=DB::table('tbl_category_product')->orderBy('category_id','desc')->get();
         $brand_all=DB::table('tbl_brand')->orderBy('brand_id','desc')->get();
-        $slider=Slider::where('slider_status','1')->get();
         return view('admin.add_product')->with('category_all',$category_all)->with('brand_all',$brand_all);
     }
     public function all_product(){
@@ -30,6 +30,7 @@ class ProductController extends Controller
         $data['product_name']=$request->product_name;
         $data['product_desc']=$request->product_desc;
         $data['product_status']=$request->product_status;
+        $data['product_quantity']=$request->product_quantity;
         $data['product_price']=$request->product_price;
         $data['product_content']=$request->product_content;
         $data['category_id']=$request->category_id;
@@ -73,6 +74,7 @@ class ProductController extends Controller
         $data = array();
         $data['product_name']=$request->product_name;
         $data['product_desc']=$request->product_desc;
+        $data['product_quantity']=$request->product_quantity;
         $data['product_status']=$request->product_status;
         $data['product_price']=$request->product_price;
         $data['product_content']=$request->product_content;
@@ -105,6 +107,7 @@ class ProductController extends Controller
         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $slider=Slider::where('slider_status','1')->get();
+        $cate_post= CatePost::where('cate_post_status','1')->get();
         $details_product=DB::table('tbl_product')
         ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
         ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
@@ -118,6 +121,6 @@ class ProductController extends Controller
         ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
         ->where('tbl_category_product.category_id',$category_id)->whereNotIn('tbl_product.product_id',[$product_id])->get();
 
-        return view('pages.product.details_product')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$details_product)->with('related_product',$related_product)->with('slider',$slider);
+        return view('pages.product.details_product')->with(compact('cate_post'))->with('category',$cate_product)->with('brand',$brand_product)->with('product',$details_product)->with('related_product',$related_product)->with('slider',$slider);
     }
 }

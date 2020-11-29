@@ -15,15 +15,19 @@ use App\Shipping;
 use App\Order;
 use App\OrderDetails;
 use App\Slider;
+use App\CatePost;
 session_start();
 
 class CheckoutController extends Controller
 {
+    
     public function login_checkout(){
         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $slider=Slider::where('slider_status','1')->get();
-        return view('pages.checkout.login_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider);
+        $cate_post= CatePost::where('cate_post_status','1')->get();
+
+        return view('pages.checkout.login_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider)->with(compact('cate_post'));
     }
     public function add_customer(Request $request){
         $data=array();
@@ -35,16 +39,25 @@ class CheckoutController extends Controller
        $customer_id= DB::table('tbl_customer')->insertGetId($data);
 
        Session::put('customer_id',$customer_id);
-       Session::put('customer_id',$request->customer_name);
+       Session::put('customer_name',$request->customer_name);
 
        return redirect::to('/show-checkout');
     }
     public function show_checkout(){
+       
+       
         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $city=City::orderby('matp','ASC')->get();
         $slider=Slider::where('slider_status','1')->get();
-         return view('pages.checkout.show_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('city',$city)->with('slider',$slider);
+        $cate_post= CatePost::where('cate_post_status','1')->get();
+        $custumer_id = Session::get('customer_id');
+        if($custumer_id){
+            return view('pages.checkout.show_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('city',$city)->with('slider',$slider)->with(compact('cate_post'));
+        }else{
+            return Redirect::to('login-checkout')->send();
+        }
+        
     }
     public function save_checkout_customer(Request $request){
 
@@ -82,52 +95,54 @@ class CheckoutController extends Controller
             return redirect::to('/login-checkout');
         }      
     }
-    public function payment_cart(){
-        $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
-        $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
-        $slider=Slider::where('slider_status','1')->get();
-        return view('pages.checkout.payment')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider);
-    }
-    public function order_place(Request $request){
-        //insert payment_method
-        $data=array();
-        $data['payment_method']=$request->payment_option;
-        $data['payment_status']="đang chờ sử lý";    
-        $payment_id= DB::table('tbl_payment')->insertGetId($data); 
+    // public function payment_cart(){
+    //     $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
+    //     $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
+    //     $slider=Slider::where('slider_status','1')->get();
+    //     $cate_post= CatePost::where('cate_post_status','1')->get();
+    //     return view('pages.checkout.payment')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider)->with(compact('cate_post'));
+    // }
+    // public function order_place(Request $request){
+    //     //insert payment_method
+    //     $data=array();
+    //     $data['payment_method']=$request->payment_option;
+    //     $data['payment_status']="đang chờ sử lý";    
+    //     $payment_id= DB::table('tbl_payment')->insertGetId($data); 
           
-        //insert order
-        $order_data=array();
-        $order_data['customer_id']=Session::get('customer_id');
-        $order_data['shipping_id']=Session::get('shipping_id');
-        $order_data['payment_id']= $payment_id;
-        $order_data['order_total']=Cart::total();
-        $order_data['order_status']="đang chờ sử lý";
-        $order_id= DB::table('tbl_order')->insertGetId($order_data);
+    //     //insert order
+    //     $order_data=array();
+    //     $order_data['customer_id']=Session::get('customer_id');
+    //     $order_data['shipping_id']=Session::get('shipping_id');
+    //     $order_data['payment_id']= $payment_id;
+    //     $order_data['order_total']=Cart::total();
+    //     $order_data['order_status']="đang chờ sử lý";
+    //     $order_id= DB::table('tbl_order')->insertGetId($order_data);
 
-        //insert order_detail
-        $content = Cart::content();  
-        foreach($content as $item_content){
-            $order_detail_data=array();
-            $order_detail_data['order_id']= $order_id;
-            $order_detail_data['product_id']=$item_content->id;
-            $order_detail_data['product_name']= $item_content->name;
-            $order_detail_data['product_price']=$item_content->price;
-            $order_detail_data['product_sales_quantity']=$item_content->qty;
-            DB::table('tbl_order_detail')->insertGetId( $order_detail_data); 
-        }
+    //     //insert order_detail
+    //     $content = Cart::content();  
+    //     foreach($content as $item_content){
+    //         $order_detail_data=array();
+    //         $order_detail_data['order_id']= $order_id;
+    //         $order_detail_data['product_id']=$item_content->id;
+    //         $order_detail_data['product_name']= $item_content->name;
+    //         $order_detail_data['product_price']=$item_content->price;
+    //         $order_detail_data['product_sales_quantity']=$item_content->qty;
+    //         DB::table('tbl_order_detail')->insertGetId( $order_detail_data); 
+    //     }
         
-        if( $data['payment_method']==1){
-            echo "Bạn Đã Thanh toán thành cong bằng thẻ ATM";
-        }elseif($data['payment_method']==2){
-            $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
-            $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
-            $slider=Slider::where('slider_status','1')->get();
-            Cart::destroy();
-            return view('pages.checkout.handcash')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider);
-        }else{
-            echo "Bạn Đã Thanh toán thành cong bằng PayPal";
-        }
-    }
+    //     if( $data['payment_method']==1){
+    //         echo "Bạn Đã Thanh toán thành cong bằng thẻ ATM";
+    //     }elseif($data['payment_method']==2){
+    //         $cate_product=DB::table('tbl_category_product')->where('category_status','1')->orderBy('category_id','desc')->get();
+    //         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
+    //         $slider=Slider::where('slider_status','1')->get();
+    //         $cate_post= CatePost::where('cate_post_status','1')->get();
+    //         Cart::destroy();
+    //         return view('pages.checkout.handcash')->with('category',$cate_product)->with('brand',$brand_product)->with('slider',$slider)->with(compact('cate_post'));
+    //     }else{
+    //         echo "Bạn Đã Thanh toán thành cong bằng PayPal";
+    //     }
+    // }
 
     public function select_delivery_home(Request $request){
         $data = $request->all();
@@ -175,46 +190,98 @@ class CheckoutController extends Controller
         return redirect()->back();
     }
     public function confirm_order(Request $request){
-        $data = $request->all();
 
-        $shipping = new Shipping();
-        $shipping->shipping_name = $data['shipping_name'];
-        $shipping->shipping_email = $data['shipping_email'];
-        $shipping->shipping_phone = $data['shipping_phone'];
-        $shipping->shipping_address = $data['shipping_address'];
-        $shipping->shipping_notes = $data['shipping_notes'];
-        $shipping->shipping_method = $data['shipping_method'];
-        $shipping->save();
-        $shipping_id = $shipping->shipping_id;
+        $customer_id=Session::get('customer_id');
+        if($customer_id){
+            $data = $request->all();
 
-        $checkout_code = substr(md5(microtime()),rand(0,26),5);
-
- 
-        $order = new Order;
-        $order->customer_id = Session::get('customer_id');
-        $order->shipping_id = $shipping_id;
-        $order->order_status = 1;
-        $order->order_code = $checkout_code;
-
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $order->created_at = now();
-        $order->save();
-
-        if(Session::get('cart')==true){
-           foreach(Session::get('cart') as $key => $cart){
-               $order_details = new OrderDetails;
-               $order_details->order_code = $checkout_code;
-               $order_details->product_id = $cart['product_id'];
-               $order_details->product_name = $cart['product_name'];
-               $order_details->product_price = $cart['product_price'];
-               $order_details->product_sales_quantity = $cart['product_qty'];
-               $order_details->product_coupon =  $data['order_coupon'];
-               $order_details->product_feeship = $data['order_fee'];
-               $order_details->save();
-           }
+            if($data['shipping_method']==1){
+             $shipping = new Shipping();
+             $shipping->shipping_name = $data['shipping_name'];
+             $shipping->shipping_email = $data['shipping_email'];
+             $shipping->shipping_phone = $data['shipping_phone'];
+             $shipping->shipping_address = $data['shipping_address'];
+             $shipping->shipping_notes = $data['shipping_notes'];
+             $shipping->shipping_method = $data['shipping_method'];
+             $shipping->save();
+             $shipping_id = $shipping->shipping_id;
+     
+             $checkout_code = substr(md5(microtime()),rand(0,26),5);
+     
+      
+             $order = new Order;
+             $order->customer_id = Session::get('customer_id');
+             $order->shipping_id = $shipping_id;
+             $order->order_status = 1;
+             $order->order_code = $checkout_code;
+     
+             date_default_timezone_set('Asia/Ho_Chi_Minh');
+             $order->created_at = now();
+             $order->save();
+     
+             if(Session::get('cart')==true){
+                foreach(Session::get('cart') as $key => $cart){
+                    $order_details = new OrderDetails;
+                    $order_details->order_code = $checkout_code;
+                    $order_details->product_id = $cart['product_id'];
+                    $order_details->product_name = $cart['product_name'];
+                    $order_details->product_price = $cart['product_price'];
+                    $order_details->product_sales_quantity = $cart['product_qty'];
+                    $order_details->product_coupon =  $data['order_coupon'];
+                    $order_details->product_feeship = $data['order_fee'];
+                    $order_details->save();
+                }
+             }
+             Session::forget('coupon');
+             Session::forget('fee');
+             Session::forget('cart');
+             return 1;
+            }
+            else{
+                 $shipping = new Shipping();
+                 $shipping->shipping_name = $data['shipping_name'];
+                 $shipping->shipping_email = $data['shipping_email'];
+                 $shipping->shipping_phone = $data['shipping_phone'];
+                 $shipping->shipping_address = $data['shipping_address'];
+                 $shipping->shipping_notes = $data['shipping_notes'];
+                 $shipping->shipping_method = $data['shipping_method'];
+                 $shipping->save();
+                 $shipping_id = $shipping->shipping_id;
+     
+                 $checkout_code = substr(md5(microtime()),rand(0,26),5);
+     
+         
+                 $order = new Order;
+                 $order->customer_id = Session::get('customer_id');
+                 $order->shipping_id = $shipping_id;
+                 $order->order_status = 1;
+                 $order->order_code = $checkout_code;
+     
+                 date_default_timezone_set('Asia/Ho_Chi_Minh');
+                 $order->created_at = now();
+                 $order->save();
+     
+                 if(Session::get('cart')==true){
+                     foreach(Session::get('cart') as $key => $cart){
+                         $order_details = new OrderDetails;
+                         $order_details->order_code = $checkout_code;
+                         $order_details->product_id = $cart['product_id'];
+                         $order_details->product_name = $cart['product_name'];
+                         $order_details->product_price = $cart['product_price'];
+                         $order_details->product_sales_quantity = $cart['product_qty'];
+                         $order_details->product_coupon =  $data['order_coupon'];
+                         $order_details->product_feeship = $data['order_fee'];
+                         $order_details->save();
+                     }
+                 } 
+                 Session::forget('coupon');
+                 Session::forget('fee');
+                 Session::forget('cart');         
+                 return 0;
+            }
+        }else{
+            return redirect::to('/login-checkout');
         }
-        Session::forget('coupon');
-        Session::forget('fee');
-        Session::forget('cart');
+       
    }      
 }

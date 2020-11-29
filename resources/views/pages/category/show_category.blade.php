@@ -1,6 +1,9 @@
 @extends('layout')
 @section('content')
-<div class="features_items"><!--features_items-->
+<div class="features_items">
+	<img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+	<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
+	<!--features_items-->
     @foreach ($category_name as $item_category_name)
     <h2 class="title text-center">Danh Mục {{ $item_category_name->category_name }}</h2>
     @endforeach	

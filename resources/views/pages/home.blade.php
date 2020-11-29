@@ -1,7 +1,59 @@
+
+
+
+
+
+
 @extends('layout')
+@section('content2')
+<section id="slider"><!--slider-->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+						<li data-target="#slider-carousel" data-slide-to="1"></li>
+						<li data-target="#slider-carousel" data-slide-to="2"></li>
+					</ol>
+					
+					<div class="carousel-inner">
+						@php 
+						$i = 0;
+					@endphp
+					@foreach($slider as $key => $slide)
+						@php 
+							$i++;
+						@endphp
+						<div class="item {{$i==1 ? 'active' : '' }}">
+						   
+							<div class="col-sm-12">
+								<img alt="{{$slide->slider_desc}}" src="{{asset('public/uploads/slider/'.$slide->slider_image)}}"  class="img img-responsive">
+							   
+							</div>
+						</div>
+					@endforeach  							
+					</div>
+					
+					<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+						<i class="fa fa-angle-left"></i>
+					</a>
+					<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</section><!--/slider-->
+@endsection
+
 @section('content')
+<img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
 <div class="features_items"><!--features_items-->
-	<div class="fb-like" data-href="http://localhost/phanvietcode/shopbanhanglaravel/" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="false"></div>
+	
 	{{-- <div class="fb-share-button" data-href="http://localhost/phanvietcode/shopbanhanglaravel/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%2Fphanvietcode%2Fshopbanhanglaravel%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Chia sẻ</a></div> --}}
 	<h2 class="title text-center">Sản Phẩm Mới</h2>
 		@foreach ($product as $item_product)

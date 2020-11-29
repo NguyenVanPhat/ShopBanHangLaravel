@@ -13,7 +13,7 @@ class OrderDetails extends Model
     protected $primaryKey = 'order_details_id';
  	protected $table = 'tbl_order_detail';
 
-	 public function product(){
+	public function product(){
 		return $this->belongsTo('App\Product','product_id');
 	}
 }

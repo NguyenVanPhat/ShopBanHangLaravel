@@ -54,8 +54,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="clearfix"></div>
 					<input type="submit" value="Đăng Nhập" name="login">
             </form>
-            <a href="{{ URL::TO('/register-auth') }}"> Đăng Ký |</a>
-            <a href="{{ URL::TO('/login-auth') }}"> Đăng Nhập Auth </a>
+            {{-- <a href="{{ URL::TO('/register-auth') }}"> Đăng Ký |</a>
+            <a href="{{ URL::TO('/login-auth') }}"> Đăng Nhập Auth </a> --}}
 			
 			{{-- <p>Don't Have an Account ?<a href="registration.html">Create an account</a></p> --}}
 	</div>

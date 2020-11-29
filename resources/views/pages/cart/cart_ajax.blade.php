@@ -1,7 +1,9 @@
 @extends('layout')
 @section('content')
+<img class="leftgame" style="position: fixed;left: 205.5px;top: 55px;" src="{{URL::TO('public/frontend/images/left-min.png')}}" alt="" />
+	<img class="rightgame" style="position: fixed;right: 234.5px;top: 55px;" src="{{URL::TO('public/frontend/images/RIGHT-min.png')}}" alt="" />
 <section id="cart_items">
-    <div class="container">
+    <div class="">
         <h3 class="text-center"> Xem Giỏ Hàng </h3>
         @if(Session::get('cart')==true)
         <div class="table-responsive cart_info">
@@ -101,7 +103,7 @@
                                         @endphp
                                     <li>Thành Tiền :<span>{{number_format($sub_total-$total_coupon,0,',','.')}} VND</span></li>
                                     @elseif($cou['coupon_condition']==2)
-                                    <li>Mã giảm Tiền Mặt : {{number_format($cou['coupon_money'],0,',','.')}} VND</span></li>	                                                                             
+                                    <li>Mã giảm Tiền Mặt :<span> {{number_format($cou['coupon_money'],0,',','.')}} VND</span></li>	                                                                             
                                         @php 
                                             $total_coupon = $sub_total  - $cou['coupon_money'];                           
                                         @endphp                                  
