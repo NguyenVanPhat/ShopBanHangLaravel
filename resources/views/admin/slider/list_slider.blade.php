@@ -36,7 +36,7 @@
           <tr>
             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
             <td>{{ $slide->slider_name }}</td>
-            <td><img src="public/uploads/slider/{{ $slide->slider_image }}" height="120" width="500"></td>
+            <td><img class="img-thumbnail" src="public/uploads/slider/{{ $slide->slider_image }}" height="120" width="500"></td>
             <td>{{ $slide->slider_desc }}</td>
             <td><span class="text-ellipsis">
               <?php

@@ -16,36 +16,20 @@
 </style>
     <div class="col-sm-5">
     <ul id="imageGallery">
-        <li data-thumb="{{asset('/public/frontend/images/man-one.jpg')}}" data-src="{{asset('/public/frontend/images/man-one.jpg')}}">
-            <img  width="100%" src="{{asset('/public/frontend/images/man-one.jpg')}}" />
+        @foreach($gallery as $item_gal)
+        <li data-thumb="{{asset('/public/uploads/gallery/'.$item_gal->gallery_image)}}" data-src="{{asset('/public/uploads/gallery/'.$item_gal->gallery_image)}}">
+            <img  width="100%" src="{{asset('/public/uploads/gallery/'.$item_gal->gallery_image)}}" />
         </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img  width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
-        <li data-thumb="{{asset('/public/frontend/images/gallery3.jpg')}}" data-src="{{asset('/public/frontend/images/gallery3.jpg')}}">
-            <img width="100% "src="{{asset('/public/frontend/images/gallery3.jpg')}}" />
-        </li>
+       @endforeach
 </ul>
 
     </div>
     <div class="col-sm-7">
         <div class="product-information"><!--/product-information-->
             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
-            <h2>{{ $item_product->product_name }}</h2>
-            <p>ID Sản Phẩm: {{ $item_product->product_id }}</p>
-            <img src="{{URL::TO('public/frontend/images/rating.png')}}" alt="" />
+            <h1>{{ $item_product->product_name }}</h1>
+            {{-- <p>ID Sản Phẩm: {{ $item_product->product_id }}</p>
+            <img src="{{URL::TO('public/frontend/images/rating.png')}}" alt="" /> --}}
             <form action="{{ URL::TO('/add-cart-ajax') }}" method="post">
                 {{ csrf_field() }}
                 <span>

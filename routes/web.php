@@ -170,4 +170,4 @@ Route::get('/show-gallery/{product_id}','GalleryController@show_gallery');
 Route::post('/show-gallery-ajax','GalleryController@show_gallery_ajax');
 Route::post('/insert-gallery/{pro_id}','GalleryController@insert_gallery');
 Route::post('/edit-gal-name','GalleryController@edit_gal_name');
-
+Route::post('/del-gal','GalleryController@del_gal');

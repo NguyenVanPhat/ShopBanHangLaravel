@@ -16,14 +16,33 @@ class GalleryController extends Controller
 
         return view('admin.gallery.show_gallery')->with(compact('pro_id'));
     }
+    public function edit_gal_name(Request $request){
+        $gal_id=$request->gal_id;
+        $gal_name=$request->gal_name;    
+        $gallery=Gallery::find($gal_id);
+        $gallery->gallery_name =$gal_name;
+        $gallery->save();
+  
+    }
+    public function del_gal(Request $request){
+        $gal_id=$request->gal_id;
+          
+        $gallery=Gallery::find($gal_id);
+
+       
+        unlink("public/uploads/gallery/".$gallery->gallery_image);
+        $gallery->delete();
+        
+  
+    }
 
     public function show_gallery_ajax(Request $request){
         
         $data=$request->all();
 
-        $gallery=Gallery::where('product_id',$data['product_id'])->orderBy('gallery_id','desc')->get();
+        $gallery=Gallery::where('product_id',$data['product_id'])->orderBy('product_id','desc')->get();
       
-        $out='<form> '.csrf_field().' <table  class="table table-striped b-t b-light" id="myTable">
+        $out='<form>'.csrf_field().'<table  class="table table-striped b-t b-light" id="myTable">
         <thead>
         <tr>   
             <th>STT</th>
@@ -36,16 +55,16 @@ class GalleryController extends Controller
         if($gallery->count()>0){ 
             $i=0;
             foreach($gallery as $item){
-                $out.=' <tr>
+                $out.='<tr>
                 <td><label class="i-checks m-b-none">'.$i.'</label></td>
-                <td contenteditable class="edit_gal_name" data-gal_id="'.$item->gallery_id.'">'.$item->gallery_name.'</td>                 
-                <td><img width="100px" hight="100px" src="'.url('public/uploads/gallery/'.$item->gallery_name).'" ></td>
-                <td><button id="delete_gallery" class="btn btn-danger"> Xóa </button></td>                  
-            </tr>';
+                <td class="gal_name" data-gal_id="'.$item->gallery_id.'" contenteditable>'.$item->gallery_name.'</td>                 
+                <td><img class="img-thumbnail" width="120" height="120" src="'.url('public/uploads/gallery/'.$item->gallery_image).'"></td>
+                <td><button id="delete_gal_id" data-gal_id="'.$item->gallery_id.'" type="button" class="btn btn-danger"> Xóa </button></td>                  
+            </tr> ';
             $i++;
             }
             $out.='</tbody>
-            </table></form> ';       
+            </table></form>';       
         }
         return $out;       
     }
@@ -62,23 +81,13 @@ class GalleryController extends Controller
                 $gallery->gallery_name=$new_image;
                 $gallery->gallery_image=$new_image;
                 $gallery->product_id= $pro_id;
+
                 $gallery->save();
             }
         }
 
         Session::put('message','Thêm Thư Viện Ảnh Thành Công !');
         return redirect()->back();
-        
-    }
-    public function edit_gal_name (Request $request){
-        $gal_id=$request->gal_id;
-        $gal_name=$request->gal_name;       
-        
-       $gallery=Gallery::find($gal_id);
-        var $name=$gallery->gallery_name;
-
-       dd($name);
-       
         
     }
 }

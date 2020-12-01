@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Slider;
 use App\CatePost;
+use App\Gallery;
 session_start();
 class ProductController extends Controller
 {
@@ -115,12 +116,14 @@ class ProductController extends Controller
 
         foreach($details_product as $item){
             $category_id=$item->category_id;
+            $product_id=$item->product_id;
         }
+        $gallery=Gallery::where('product_id',$product_id)->get();
         $related_product=DB::table('tbl_product')
         ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
         ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
         ->where('tbl_category_product.category_id',$category_id)->whereNotIn('tbl_product.product_id',[$product_id])->get();
 
-        return view('pages.product.details_product')->with(compact('cate_post'))->with('category',$cate_product)->with('brand',$brand_product)->with('product',$details_product)->with('related_product',$related_product)->with('slider',$slider);
+        return view('pages.product.details_product')->with(compact('gallery'))->with(compact('cate_post'))->with('category',$cate_product)->with('brand',$brand_product)->with('product',$details_product)->with('related_product',$related_product)->with('slider',$slider);
     }
 }

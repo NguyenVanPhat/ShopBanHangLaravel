@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Số Lượng Sản Phẩm</label>
-                                    <input VALUE="{{ $edit->product_quantity }}" type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Số Lượng Sản Phẩmn....">
+                                    <input VALUE="{{ $edit->product_quantity }}" type="text" name="product_quantity" class="form-control" id="exampleInputEmail1" placeholder="Số Lượng Sản Phẩmn....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Hình Ảnh</label>

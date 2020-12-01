@@ -21,7 +21,7 @@ class HomeController extends Controller
         $brand_product=DB::table('tbl_brand')->where('brand_status','1')->orderBy('brand_id','desc')->get();
         $slider=Slider::where('slider_status','1')->get();
         $cate_post= CatePost::where('cate_post_status','1')->get();
-        $all_product=DB::table('tbl_product')->where('product_status','1')->orderby('product_id','desc')->limit(9)->get();
+        $all_product=DB::table('tbl_product')->where('product_status','1')->orderby('product_id','desc')->paginate(9);
         return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('product',$all_product)->with('slider',$slider)->with(compact('cate_post'));
     }
     public function search_home(Request $request){    

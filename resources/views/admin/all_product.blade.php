@@ -37,7 +37,7 @@
                     <td> <a href="{{ URL('/show-gallery/'.$item->product_id) }}"> Thêm Gallery </a> </td>
                     <td><span class="text-ellipsis">{{ $item->product_price}}</span></td>
                     <td><span class="text-ellipsis">{{ $item->product_quantity}}</span></td>
-                    <td><img width="100px" hight="100px" src="public/uploads/product/{{$item->product_image}}"></td>
+                    <td><img class="img-thumbnail" width="100px" hight="100px" src="public/uploads/product/{{$item->product_image}}"></td>
                     {{-- <td><span class="text-ellipsis">{{ $item->product_desc}}</span></td> --}}
                     {{-- <td><span class="text-ellipsis">{{ $item->product_content}}</span></td> --}}
                     <td><span class="text-ellipsis">{{ $item->brand_name }}</span></td>

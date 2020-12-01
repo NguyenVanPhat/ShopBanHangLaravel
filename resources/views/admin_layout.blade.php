@@ -272,26 +272,41 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                
             }else{
                 $('#file').val('');
-                $('#error_gallery').html('<span class="text-danger">'+ error +'</span>')
+                $('#error_gallery').html('<span class="text-danger">'+ error +'</span>');
             }
         });
-
-        $(document).on('blur','.edit_gal_name',function(){
-            var gal_id=$(this).data(gal_id);
+        $(document).on('blur','.gal_name',function(){
             var gal_name=$(this).text();
+            var gal_id=$(this).data('gal_id');
             var _token=$('input[name="_token"]').val();
 
             $.ajax({
-                url:"{{url('/edit-gal-name')}}",
+                url:'{{ url('/edit-gal-name') }}',
                 method:'POST',
-                data:{gal_id:gal_id,gal_name:gal_name,_token:_token},
+                data:{gal_name:gal_name,gal_id:gal_id,_token:_token},
                 success:function(data){
                     load_gallery();
-                    $('#error_gallery').html('<span class="text-danger">cập nhật tên hình ảnh thành công !</span>')
+                    $('#error_gallery').html('<span class="text-success">Cập Nhật Tên Thành Công</span>');
                 }
             });
+    
         });
-        
+        $(document).on('click','#delete_gal_id',function(){
+            var gal_id=$(this).data('gal_id');       
+            var _token=$('input[name="_token"]').val();
+
+            $.ajax({
+                url:'{{ url('/del-gal')}}',
+                method:'post',
+                data:{gal_id:gal_id,_token:_token},
+                success:function(){
+                    load_gallery();
+                    $('#error_gallery').html('<span class="text-danger">Xóa Ảnh Thành Công !</span>');
+                }
+            })
+           
+    
+        });
 } );
 </script>	
 

@@ -86,4 +86,13 @@
 			</div>
 		@endforeach																								
 </div><!--features_items-->
+<div class="row ">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<ul class="pagination pagination-sm m-t-none m-b-none">
+				{!!$product->links()!!}
+			</ul>
+		</div>
+		<div class="col-md-4"></div>
+</div>
 @endsection

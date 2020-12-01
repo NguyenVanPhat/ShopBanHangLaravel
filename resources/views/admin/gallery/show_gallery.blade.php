@@ -29,7 +29,7 @@
             </div>
          </div>
         </form>
-        <form method="POST">
+        <form >
             @csrf
             <input type="hidden" class="product_id" value="{{ $pro_id }}" >
             <div id="load_gallery">
